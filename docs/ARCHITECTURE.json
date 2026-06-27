@@ -1,0 +1,2807 @@
+{
+  "generated_at" : "2024-07-29T10:00:00Z",
+  "business_name" : "Gulmohar Bar & Curryhouse",
+  "base_package" : "com.gulmoharbarcurryhouse",
+  "project_dependencies" : {
+    "spring_boot_starters" : [ "web", "data-jpa", "postgresql", "lombok", "validation", "actuator", "security", "mail" ],
+    "npm_packages" : [ "@tanstack/react-query", "react-hook-form", "zod", "axios", "react-router-dom", "clsx", "lucide-react", "react-razorpay", "@radix-ui/react-dialog", "@radix-ui/react-label", "@radix-ui/react-toast" ]
+  },
+  "files" : [ {
+    "file_name" : "User.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/User.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a user entity for authentication and authorization.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key, auto-generated."
+    }, {
+      "name" : "email",
+      "type" : "String",
+      "description" : "User's email address, used for login. Must be unique and not null."
+    }, {
+      "name" : "passwordHash",
+      "type" : "String",
+      "description" : "BCrypt-hashed password. Not null."
+    }, {
+      "name" : "role",
+      "type" : "Role",
+      "description" : "User's role (ADMIN or CUSTOMER). Determines access level. Not null."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/Role.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-core",
+    "file_role" : "MODEL layer - Defines the User schema for persistence, including email, hashed password, and role. Used by UserRepository and UserService for authentication."
+  }, {
+    "file_name" : "Role.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/Role.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Enum defining user roles within the application.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "ADMIN",
+      "type" : "enum",
+      "description" : "Administrator role with full access to manage content."
+    }, {
+      "name" : "CUSTOMER",
+      "type" : "enum",
+      "description" : "Customer role, for potential future features like order history."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-core",
+    "file_role" : "MODEL layer - A top-level enum defining the authority levels (ADMIN, CUSTOMER) for users. Imported by the User entity and used by Spring Security for authorization."
+  }, {
+    "file_name" : "UserRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/UserRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for User entities.",
+    "public_functions" : [ {
+      "name" : "findByEmail",
+      "parameters" : [ "String email" ],
+      "return_type" : "Optional<User>",
+      "description" : "Finds a user by their unique email address."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/User.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-core",
+    "file_role" : "REPOSITORY layer - Provides data access methods for the User entity. Its primary public method is findByEmail(String email), used by UserService during authentication."
+  }, {
+    "file_name" : "UserService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/UserService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Implements Spring Security's UserDetailsService to load user-specific data.",
+    "public_functions" : [ {
+      "name" : "loadUserByUsername",
+      "parameters" : [ "String email" ],
+      "return_type" : "UserDetails",
+      "description" : "Loads a user by email for Spring Security authentication."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/UserRepository.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-core",
+    "file_role" : "SERVICE layer - Implements UserDetailsService for Spring Security. Its core method, loadUserByUsername(String email), is called by the authentication manager to fetch user details from the database."
+  }, {
+    "file_name" : "AdminInitializer.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/config/AdminInitializer.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONFIG",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A CommandLineRunner to create the initial admin user on application startup if one doesn't exist.",
+    "public_functions" : [ {
+      "name" : "run",
+      "parameters" : [ "String... args" ],
+      "return_type" : "void",
+      "description" : "Checks for an admin user based on environment variables and creates one if not found."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/UserRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/model/User.java", "backend/src/main/java/com/gulmoharbarcurryhouse/model/Role.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-core",
+    "file_role" : "CONFIG layer - A CommandLineRunner that ensures an initial ADMIN user exists on startup, reading credentials from environment variables. This prevents a locked-out state on first deployment."
+  }, {
+    "file_name" : "JwtUtil.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/util/JwtUtil.java",
+    "file_type" : "BACKEND",
+    "layer" : "UTIL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Utility class for handling JWT creation, validation, and claims extraction.",
+    "public_functions" : [ {
+      "name" : "generateToken",
+      "parameters" : [ "UserDetails userDetails" ],
+      "return_type" : "String",
+      "description" : "Generates a JWT for a given user."
+    }, {
+      "name" : "validateToken",
+      "parameters" : [ "String token", "UserDetails userDetails" ],
+      "return_type" : "boolean",
+      "description" : "Validates a JWT against user details."
+    }, {
+      "name" : "extractEmail",
+      "parameters" : [ "String token" ],
+      "return_type" : "String",
+      "description" : "Extracts the email (subject) from a JWT."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "UTIL layer - Provides static methods for JWT operations. Key public methods are generateToken(UserDetails) for the AuthController and validateToken(String, UserDetails) for the JwtAuthFilter."
+  }, {
+    "file_name" : "JwtAuthFilter.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/security/JwtAuthFilter.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONFIG",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A filter that intercepts requests to validate the JWT from the Authorization header.",
+    "public_functions" : [ {
+      "name" : "doFilterInternal",
+      "parameters" : [ "HttpServletRequest request", "HttpServletResponse response", "FilterChain filterChain" ],
+      "return_type" : "void",
+      "description" : "Core filter logic to parse and validate the JWT."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/util/JwtUtil.java", "backend/src/main/java/com/gulmoharbarcurryhouse/service/UserService.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "CONFIG layer - A Spring Security filter that runs once per request. It extracts the Bearer token, uses JwtUtil to validate it, and sets the user's authentication context if the token is valid."
+  }, {
+    "file_name" : "SecurityConfig.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/config/SecurityConfig.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONFIG",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Centralized security configuration for the application, defining protected routes and authentication mechanisms.",
+    "public_functions" : [ {
+      "name" : "securityFilterChain",
+      "parameters" : [ "HttpSecurity http" ],
+      "return_type" : "SecurityFilterChain",
+      "description" : "Defines CORS, CSRF, session management, and authorization rules for all HTTP requests."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/security/JwtAuthFilter.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "CONFIG layer - Defines the core security posture. It configures the filter chain to use JwtAuthFilter, sets up authorization rules for public vs. admin routes, and ensures stateless session management."
+  }, {
+    "file_name" : "AuthController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/AuthController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Controller for handling user authentication.",
+    "public_functions" : [ {
+      "name" : "login",
+      "parameters" : [ "AuthRequest authRequest" ],
+      "return_type" : "ResponseEntity<AuthResponse>",
+      "description" : "Authenticates a user and returns a JWT."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/auth/login",
+      "request_body" : "AuthRequest",
+      "response_body" : "AuthResponse",
+      "description" : "Takes email and password, returns a JWT, role, and expiration if credentials are valid."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/AuthRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/AuthResponse.java", "backend/src/main/java/com/gulmoharbarcurryhouse/util/JwtUtil.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "CONTROLLER layer - Exposes the public /api/v1/auth/login endpoint. It uses Spring's AuthenticationManager to validate credentials and JwtUtil to generate a token upon successful login."
+  }, {
+    "file_name" : "AuthRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/AuthRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Data Transfer Object for authentication requests.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "email",
+      "type" : "String",
+      "description" : "User's email. Must be a valid email format and not blank."
+    }, {
+      "name" : "password",
+      "type" : "String",
+      "description" : "User's password. Must not be blank."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "DTO layer - A record representing the JSON body for a login request, containing email and password fields with validation annotations."
+  }, {
+    "file_name" : "AuthResponse.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/AuthResponse.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Data Transfer Object for authentication responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "token",
+      "type" : "String",
+      "description" : "The generated JWT."
+    }, {
+      "name" : "role",
+      "type" : "String",
+      "description" : "The user's role (e.g., 'ADMIN')."
+    }, {
+      "name" : "expiresAt",
+      "type" : "long",
+      "description" : "Token expiration timestamp in epoch milliseconds."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-jwt",
+    "file_role" : "DTO layer - A record representing the JSON response after a successful login, containing the JWT, user role, and token expiration time."
+  }, {
+    "file_name" : "SpaController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/SpaController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Forwards non-API, non-static-file requests to the React frontend's index.html, enabling client-side routing.",
+    "public_functions" : [ {
+      "name" : "fallback",
+      "parameters" : [ ],
+      "return_type" : "String",
+      "description" : "Handles all routes that are not API calls or static assets."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "shared-backend-utils",
+    "file_role" : "CONTROLLER layer - A special @Controller (not @RestController) that forwards all unmatched, dot-less paths to /index.html, enabling React Router to handle frontend navigation."
+  }, {
+    "file_name" : "GlobalExceptionHandler.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/exception/GlobalExceptionHandler.java",
+    "file_type" : "BACKEND",
+    "layer" : "EXCEPTION",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Centralized exception handling for the application to provide consistent error responses.",
+    "public_functions" : [ {
+      "name" : "handleResourceNotFoundException",
+      "parameters" : [ "ResourceNotFoundException ex" ],
+      "return_type" : "ResponseEntity<ErrorResponse>",
+      "description" : "Handles 404 Not Found errors."
+    }, {
+      "name" : "handleMethodArgumentNotValid",
+      "parameters" : [ "MethodArgumentNotValidException ex" ],
+      "return_type" : "ResponseEntity<ErrorResponse>",
+      "description" : "Handles 400 Bad Request errors from DTO validation."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ErrorResponse.java", "backend/src/main/java/com/gulmoharbarcurryhouse/exception/ResourceNotFoundException.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "shared-backend-utils",
+    "file_role" : "EXCEPTION layer - An @RestControllerAdvice that intercepts exceptions across all controllers, formatting them into a standardized ErrorResponse JSON object for the frontend."
+  }, {
+    "file_name" : "ErrorResponse.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ErrorResponse.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A standardized DTO for returning error details to the client.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "timestamp",
+      "type" : "LocalDateTime",
+      "description" : "Time of the error."
+    }, {
+      "name" : "status",
+      "type" : "int",
+      "description" : "HTTP status code."
+    }, {
+      "name" : "error",
+      "type" : "String",
+      "description" : "HTTP status message."
+    }, {
+      "name" : "message",
+      "type" : "String",
+      "description" : "A developer-friendly error message."
+    }, {
+      "name" : "path",
+      "type" : "String",
+      "description" : "The request path that caused the error."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "shared-backend-utils",
+    "file_role" : "DTO layer - A record defining the consistent JSON structure for all API error responses, used by the GlobalExceptionHandler."
+  }, {
+    "file_name" : "ResourceNotFoundException.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/exception/ResourceNotFoundException.java",
+    "file_type" : "BACKEND",
+    "layer" : "EXCEPTION",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom exception for cases where a requested resource is not found.",
+    "public_functions" : [ {
+      "name" : "ResourceNotFoundException",
+      "parameters" : [ "String message" ],
+      "return_type" : "constructor",
+      "description" : "Constructs the exception with a custom message."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "shared-backend-utils",
+    "file_role" : "EXCEPTION layer - A custom unchecked exception thrown by service layers when a database lookup by ID fails, which is then caught by the GlobalExceptionHandler to produce a 404 response."
+  }, {
+    "file_name" : "DataSeeder.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/config/DataSeeder.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONFIG",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Seeds the database with initial sample data (menu items, categories, events) on startup if the database is empty.",
+    "public_functions" : [ {
+      "name" : "run",
+      "parameters" : [ "String... args" ],
+      "return_type" : "void",
+      "description" : "Executes the seeding logic after the application context is loaded."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemCategoryRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/repository/EventRepository.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "shared-backend-utils",
+    "file_role" : "CONFIG layer - A CommandLineRunner that populates the database with realistic sample data for Gulmohar (e.g., North Indian dishes) on first run, ensuring the application is usable immediately after setup."
+  }, {
+    "file_name" : "MenuItem.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItem.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a single item on the restaurant's menu.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "name",
+      "type" : "String",
+      "description" : "Name of the dish, not null."
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : "Detailed description of the dish."
+    }, {
+      "name" : "price",
+      "type" : "BigDecimal",
+      "description" : "Price of the dish, not null, positive."
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : "URL to a high-quality image of the dish."
+    }, {
+      "name" : "isAvailable",
+      "type" : "boolean",
+      "description" : "Indicates if the item is currently available for ordering."
+    }, {
+      "name" : "isVeg",
+      "type" : "boolean",
+      "description" : "Indicates if the item is vegetarian."
+    }, {
+      "name" : "category",
+      "type" : "MenuItemCategory",
+      "description" : "The category this menu item belongs to (e.g., Appetizers, Main Course)."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItemCategory.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "MODEL layer - Defines the schema for a menu item, including its name, price, description, image, and relationship to a MenuItemCategory."
+  }, {
+    "file_name" : "MenuItemCategory.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItemCategory.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a category for menu items, like 'Appetizers' or 'Biryani'.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "name",
+      "type" : "String",
+      "description" : "Name of the category, unique and not null."
+    }, {
+      "name" : "menuItems",
+      "type" : "List<MenuItem>",
+      "description" : "List of menu items belonging to this category."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "MODEL layer - Defines the schema for a menu category, holding a name and a one-to-many relationship with MenuItem entities."
+  }, {
+    "file_name" : "MenuItemRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for MenuItem entities.",
+    "public_functions" : [ {
+      "name" : "findByCategoryId",
+      "parameters" : [ "UUID categoryId" ],
+      "return_type" : "List<MenuItem>",
+      "description" : "Finds all menu items belonging to a specific category."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItem.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "REPOSITORY layer - Provides data access methods for MenuItem entities, including a custom query findByCategoryId(UUID) used by the MenuService."
+  }, {
+    "file_name" : "MenuItemCategoryRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemCategoryRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for MenuItemCategory entities.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItemCategory.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "REPOSITORY layer - Provides standard CRUD data access methods for MenuItemCategory entities."
+  }, {
+    "file_name" : "MenuService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/MenuService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service layer for managing menu data.",
+    "public_functions" : [ {
+      "name" : "getAllCategoriesWithItems",
+      "parameters" : [ ],
+      "return_type" : "List<MenuItemCategoryDto>",
+      "description" : "Retrieves all categories, each populated with its menu items."
+    }, {
+      "name" : "createMenuItem",
+      "parameters" : [ "CreateMenuItemRequest request" ],
+      "return_type" : "MenuItemDto",
+      "description" : "Creates a new menu item."
+    }, {
+      "name" : "updateMenuItem",
+      "parameters" : [ "UUID id", "UpdateMenuItemRequest request" ],
+      "return_type" : "MenuItemDto",
+      "description" : "Updates an existing menu item."
+    }, {
+      "name" : "deleteMenuItem",
+      "parameters" : [ "UUID id" ],
+      "return_type" : "void",
+      "description" : "Deletes a menu item."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemCategoryRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemDto.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemCategoryDto.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateMenuItemRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateMenuItemRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "SERVICE layer - Implements business logic for the menu. Its public methods like getAllCategoriesWithItems() and createMenuItem(request) are called by the MenuController and AdminMenuController."
+  }, {
+    "file_name" : "MenuController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/MenuController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Public-facing REST controller for accessing menu information.",
+    "public_functions" : [ {
+      "name" : "getFullMenu",
+      "parameters" : [ ],
+      "return_type" : "ResponseEntity<List<MenuItemCategoryDto>>",
+      "description" : "Returns the entire menu, structured by category."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/menu",
+      "request_body" : null,
+      "response_body" : "List<MenuItemCategoryDto>",
+      "description" : "Fetches the complete, publicly visible menu."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/MenuService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemCategoryDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "CONTROLLER layer - Exposes the public, read-only GET /api/v1/menu endpoint for customers to view the menu. It delegates all business logic to the MenuService."
+  }, {
+    "file_name" : "AdminMenuController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/AdminMenuController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin-only REST controller for managing the menu (CRUD operations).",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/admin/menu-items",
+      "request_body" : "CreateMenuItemRequest",
+      "response_body" : "MenuItemDto",
+      "description" : "Creates a new menu item."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/menu-items/{id}",
+      "request_body" : "UpdateMenuItemRequest",
+      "response_body" : "MenuItemDto",
+      "description" : "Updates an existing menu item."
+    }, {
+      "method" : "DELETE",
+      "path" : "/api/v1/admin/menu-items/{id}",
+      "request_body" : null,
+      "response_body" : "void",
+      "description" : "Deletes a menu item."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/MenuService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateMenuItemRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateMenuItemRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "CONTROLLER layer - Exposes the admin-only, secured CRUD endpoints under /api/v1/admin/menu-items. All methods are protected to require ADMIN role and delegate logic to MenuService."
+  }, {
+    "file_name" : "MenuItemDto.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemDto.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing a MenuItem in API responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : ""
+    }, {
+      "name" : "name",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "price",
+      "type" : "BigDecimal",
+      "description" : ""
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "isAvailable",
+      "type" : "boolean",
+      "description" : ""
+    }, {
+      "name" : "isVeg",
+      "type" : "boolean",
+      "description" : ""
+    }, {
+      "name" : "categoryId",
+      "type" : "UUID",
+      "description" : ""
+    }, {
+      "name" : "categoryName",
+      "type" : "String",
+      "description" : ""
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "DTO layer - A record representing a menu item for API communication, flattening the category relationship into categoryId and categoryName fields."
+  }, {
+    "file_name" : "MenuItemCategoryDto.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemCategoryDto.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing a MenuItemCategory with its items.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : ""
+    }, {
+      "name" : "name",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "items",
+      "type" : "List<MenuItemDto>",
+      "description" : ""
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/MenuItemDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "DTO layer - A record representing a menu category and its associated list of MenuItemDto objects, used as the primary response type for the public menu API."
+  }, {
+    "file_name" : "CreateMenuItemRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateMenuItemRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for creating a new menu item.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "name",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "price",
+      "type" : "BigDecimal",
+      "description" : "@NotNull @Positive"
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : "@URL"
+    }, {
+      "name" : "isAvailable",
+      "type" : "boolean",
+      "description" : "@NotNull"
+    }, {
+      "name" : "isVeg",
+      "type" : "boolean",
+      "description" : "@NotNull"
+    }, {
+      "name" : "categoryId",
+      "type" : "UUID",
+      "description" : "@NotNull"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "DTO layer - A record representing the request body for creating a menu item, with validation annotations to ensure data integrity."
+  }, {
+    "file_name" : "UpdateMenuItemRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateMenuItemRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for updating an existing menu item.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "name",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "price",
+      "type" : "BigDecimal",
+      "description" : "@NotNull @Positive"
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : "@URL"
+    }, {
+      "name" : "isAvailable",
+      "type" : "boolean",
+      "description" : "@NotNull"
+    }, {
+      "name" : "isVeg",
+      "type" : "boolean",
+      "description" : "@NotNull"
+    }, {
+      "name" : "categoryId",
+      "type" : "UUID",
+      "description" : "@NotNull"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-management-backend",
+    "file_role" : "DTO layer - A record representing the request body for updating a menu item, with validation annotations to ensure data integrity."
+  }, {
+    "file_name" : "Reservation.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/Reservation.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a table reservation made by a customer.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "customerName",
+      "type" : "String",
+      "description" : "Name of the person making the reservation."
+    }, {
+      "name" : "customerEmail",
+      "type" : "String",
+      "description" : "Email of the customer."
+    }, {
+      "name" : "customerPhone",
+      "type" : "String",
+      "description" : "Phone number of the customer."
+    }, {
+      "name" : "reservationDateTime",
+      "type" : "LocalDateTime",
+      "description" : "The date and time of the reservation."
+    }, {
+      "name" : "numberOfGuests",
+      "type" : "int",
+      "description" : "The number of guests for the reservation."
+    }, {
+      "name" : "specialRequests",
+      "type" : "String",
+      "description" : "Any special requests from the customer."
+    }, {
+      "name" : "status",
+      "type" : "ReservationStatus",
+      "description" : "The current status of the reservation (e.g., PENDING, CONFIRMED, CANCELLED)."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/ReservationStatus.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "MODEL layer - Defines the schema for a customer table reservation, including guest details, time, party size, and status."
+  }, {
+    "file_name" : "ReservationStatus.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/ReservationStatus.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Enum for the status of a reservation.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "PENDING",
+      "type" : "enum",
+      "description" : "Reservation has been requested but not yet confirmed."
+    }, {
+      "name" : "CONFIRMED",
+      "type" : "enum",
+      "description" : "Reservation has been confirmed by the restaurant."
+    }, {
+      "name" : "CANCELLED",
+      "type" : "enum",
+      "description" : "Reservation has been cancelled."
+    }, {
+      "name" : "COMPLETED",
+      "type" : "enum",
+      "description" : "The guests have attended the reservation."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "MODEL layer - A top-level enum defining the possible states of a reservation (PENDING, CONFIRMED, etc.). Imported by the Reservation entity."
+  }, {
+    "file_name" : "ReservationRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/ReservationRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for Reservation entities.",
+    "public_functions" : [ {
+      "name" : "findAllByOrderByReservationDateTimeDesc",
+      "parameters" : [ ],
+      "return_type" : "List<Reservation>",
+      "description" : "Finds all reservations, ordered by most recent first."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/Reservation.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "REPOSITORY layer - Provides data access methods for Reservation entities, including a custom query to fetch all reservations sorted by date for the admin panel."
+  }, {
+    "file_name" : "ReservationService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/ReservationService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service layer for managing reservations.",
+    "public_functions" : [ {
+      "name" : "createReservation",
+      "parameters" : [ "CreateReservationRequest request" ],
+      "return_type" : "ReservationDto",
+      "description" : "Creates a new reservation and sends a confirmation email."
+    }, {
+      "name" : "getAllReservations",
+      "parameters" : [ ],
+      "return_type" : "List<ReservationDto>",
+      "description" : "Retrieves all reservations for the admin."
+    }, {
+      "name" : "updateReservationStatus",
+      "parameters" : [ "UUID id", "UpdateReservationStatusRequest request" ],
+      "return_type" : "ReservationDto",
+      "description" : "Updates the status of a reservation."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/ReservationRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ReservationDto.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateReservationRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateReservationStatusRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "SERVICE layer - Implements business logic for reservations. Its public methods like createReservation(request) and updateReservationStatus(id, request) are called by the public and admin controllers."
+  }, {
+    "file_name" : "ReservationController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/ReservationController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Public-facing REST controller for creating reservations.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/reservations",
+      "request_body" : "CreateReservationRequest",
+      "response_body" : "ReservationDto",
+      "description" : "Allows a customer to submit a new table reservation request."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/ReservationService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateReservationRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ReservationDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "CONTROLLER layer - Exposes the public POST /api/v1/reservations endpoint for customers to create a reservation. It delegates logic to ReservationService."
+  }, {
+    "file_name" : "AdminReservationController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/AdminReservationController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin-only REST controller for managing reservations.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/admin/reservations",
+      "request_body" : null,
+      "response_body" : "List<ReservationDto>",
+      "description" : "Retrieves all reservations."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/reservations/{id}/status",
+      "request_body" : "UpdateReservationStatusRequest",
+      "response_body" : "ReservationDto",
+      "description" : "Updates the status of a reservation (e.g., to CONFIRMED)."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/ReservationService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ReservationDto.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateReservationStatusRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "CONTROLLER layer - Exposes secured endpoints under /api/v1/admin/reservations for viewing and managing all reservations. All methods require ADMIN role."
+  }, {
+    "file_name" : "ReservationDto.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/ReservationDto.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing a Reservation in API responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : ""
+    }, {
+      "name" : "customerName",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "customerEmail",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "customerPhone",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "reservationDateTime",
+      "type" : "LocalDateTime",
+      "description" : ""
+    }, {
+      "name" : "numberOfGuests",
+      "type" : "int",
+      "description" : ""
+    }, {
+      "name" : "specialRequests",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "status",
+      "type" : "String",
+      "description" : "Enum value as a string."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "DTO layer - A record representing a reservation for API communication, converting the ReservationStatus enum to a String for JSON serialization."
+  }, {
+    "file_name" : "CreateReservationRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateReservationRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for creating a new reservation.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "customerName",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "customerEmail",
+      "type" : "String",
+      "description" : "@NotBlank @Email"
+    }, {
+      "name" : "customerPhone",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "reservationDateTime",
+      "type" : "LocalDateTime",
+      "description" : "@NotNull @Future"
+    }, {
+      "name" : "numberOfGuests",
+      "type" : "int",
+      "description" : "@NotNull @Min(1)"
+    }, {
+      "name" : "specialRequests",
+      "type" : "String",
+      "description" : "Optional"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "DTO layer - A record representing the request body for creating a reservation, with validation annotations to ensure all required fields are present and valid."
+  }, {
+    "file_name" : "UpdateReservationStatusRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/UpdateReservationStatusRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for updating the status of a reservation.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "status",
+      "type" : "String",
+      "description" : "The new status, must match one of the ReservationStatus enum values. @NotBlank."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-system-backend",
+    "file_role" : "DTO layer - A record representing the request body for updating a reservation's status, containing the new status as a string."
+  }, {
+    "file_name" : "Order.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/Order.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a customer's food order for delivery or takeaway.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "orderItems",
+      "type" : "List<OrderItem>",
+      "description" : "The items included in this order."
+    }, {
+      "name" : "totalAmount",
+      "type" : "BigDecimal",
+      "description" : "The total cost of the order."
+    }, {
+      "name" : "status",
+      "type" : "OrderStatus",
+      "description" : "The current status of the order."
+    }, {
+      "name" : "customerName",
+      "type" : "String",
+      "description" : "Customer's name."
+    }, {
+      "name" : "customerPhone",
+      "type" : "String",
+      "description" : "Customer's phone number."
+    }, {
+      "name" : "deliveryAddress",
+      "type" : "String",
+      "description" : "Customer's delivery address."
+    }, {
+      "name" : "razorpayOrderId",
+      "type" : "String",
+      "description" : "The order ID from Razorpay."
+    }, {
+      "name" : "razorpayPaymentId",
+      "type" : "String",
+      "description" : "The payment ID from Razorpay after successful payment."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/OrderItem.java", "backend/src/main/java/com/gulmoharbarcurryhouse/model/OrderStatus.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "MODEL layer - Defines the schema for a customer order, including customer details, total amount, status, and a one-to-many relationship with OrderItem entities."
+  }, {
+    "file_name" : "OrderItem.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/OrderItem.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a single line item within an Order.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "menuItem",
+      "type" : "MenuItem",
+      "description" : "The menu item being ordered."
+    }, {
+      "name" : "quantity",
+      "type" : "int",
+      "description" : "The quantity of the menu item ordered."
+    }, {
+      "name" : "priceAtOrder",
+      "type" : "BigDecimal",
+      "description" : "The price of the item at the time of the order."
+    }, {
+      "name" : "order",
+      "type" : "Order",
+      "description" : "The parent order this item belongs to."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/MenuItem.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "MODEL layer - Defines the schema for an item within an order, linking a MenuItem with a quantity and the parent Order."
+  }, {
+    "file_name" : "OrderStatus.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/OrderStatus.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Enum for the status of a customer order.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "PAYMENT_PENDING",
+      "type" : "enum",
+      "description" : "Order created, awaiting payment."
+    }, {
+      "name" : "RECEIVED",
+      "type" : "enum",
+      "description" : "Payment confirmed, order received by the kitchen."
+    }, {
+      "name" : "PREPARING",
+      "type" : "enum",
+      "description" : "Order is being prepared."
+    }, {
+      "name" : "OUT_FOR_DELIVERY",
+      "type" : "enum",
+      "description" : "Order is on its way to the customer."
+    }, {
+      "name" : "READY_FOR_PICKUP",
+      "type" : "enum",
+      "description" : "Order is ready for takeaway."
+    }, {
+      "name" : "COMPLETED",
+      "type" : "enum",
+      "description" : "Order has been delivered/picked up."
+    }, {
+      "name" : "CANCELLED",
+      "type" : "enum",
+      "description" : "Order was cancelled."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "MODEL layer - A top-level enum defining the lifecycle states of a customer order (PAYMENT_PENDING, RECEIVED, etc.). Imported by the Order entity."
+  }, {
+    "file_name" : "OrderRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/OrderRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for Order entities.",
+    "public_functions" : [ {
+      "name" : "findByRazorpayOrderId",
+      "parameters" : [ "String razorpayOrderId" ],
+      "return_type" : "Optional<Order>",
+      "description" : "Finds an order by its associated Razorpay order ID."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/Order.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "REPOSITORY layer - Provides data access for Order entities. Includes the critical findByRazorpayOrderId(String) method for webhook payment verification."
+  }, {
+    "file_name" : "OrderItemRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/OrderItemRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for OrderItem entities.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/OrderItem.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "REPOSITORY layer - Provides standard CRUD data access methods for OrderItem entities."
+  }, {
+    "file_name" : "OrderService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/OrderService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service layer for managing customer orders.",
+    "public_functions" : [ {
+      "name" : "createOrder",
+      "parameters" : [ "CreateOrderRequest request" ],
+      "return_type" : "OrderResponse",
+      "description" : "Creates an order, calculates total, and initiates payment with PaymentService."
+    }, {
+      "name" : "verifyPaymentAndUpdateStatus",
+      "parameters" : [ "PaymentVerificationRequest request" ],
+      "return_type" : "OrderResponse",
+      "description" : "Verifies Razorpay signature and updates order status upon successful payment."
+    }, {
+      "name" : "getAllOrders",
+      "parameters" : [ ],
+      "return_type" : "List<OrderResponse>",
+      "description" : "Retrieves all orders for the admin panel."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/OrderRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/repository/MenuItemRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/service/PaymentService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateOrderRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderResponse.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "SERVICE layer - Orchestrates order creation and payment verification. Its createOrder(request) method calculates totals and calls PaymentService, while verifyPaymentAndUpdateStatus(request) handles post-payment logic."
+  }, {
+    "file_name" : "OrderController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/OrderController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Public-facing REST controller for creating orders.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/orders",
+      "request_body" : "CreateOrderRequest",
+      "response_body" : "OrderResponse",
+      "description" : "Initiates a new food order and returns details needed for payment."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/OrderService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateOrderRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderResponse.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "CONTROLLER layer - Exposes the public POST /api/v1/orders endpoint for customers to place an order. It delegates all logic to the OrderService."
+  }, {
+    "file_name" : "AdminOrderController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/AdminOrderController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin-only REST controller for viewing and managing orders.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/admin/orders",
+      "request_body" : null,
+      "response_body" : "List<OrderResponse>",
+      "description" : "Retrieves all customer orders."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/orders/{id}/status",
+      "request_body" : "UpdateOrderStatusRequest",
+      "response_body" : "OrderResponse",
+      "description" : "Updates the status of an order."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/OrderService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderResponse.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "CONTROLLER layer - Exposes secured endpoints under /api/v1/admin/orders for viewing and updating order statuses. All methods require ADMIN role."
+  }, {
+    "file_name" : "CreateOrderRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateOrderRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for creating a new order.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "items",
+      "type" : "List<OrderItemRequest>",
+      "description" : "@NotEmpty"
+    }, {
+      "name" : "customerName",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "customerPhone",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "deliveryAddress",
+      "type" : "String",
+      "description" : "@NotBlank"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderItemRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "DTO layer - A record representing the request body for creating an order, containing customer details and a list of items. It uses OrderItemRequest for the items."
+  }, {
+    "file_name" : "OrderItemRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderItemRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for a single item within a create order request.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "menuItemId",
+      "type" : "UUID",
+      "description" : "@NotNull"
+    }, {
+      "name" : "quantity",
+      "type" : "int",
+      "description" : "@Min(1)"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "DTO layer - A record representing a single item in an order request, containing the menu item's ID and the desired quantity. It is nested within CreateOrderRequest."
+  }, {
+    "file_name" : "OrderResponse.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderResponse.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing an Order in API responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "orderId",
+      "type" : "UUID",
+      "description" : "Internal order ID."
+    }, {
+      "name" : "razorpayOrderId",
+      "type" : "String",
+      "description" : "Razorpay's order ID, needed for frontend payment."
+    }, {
+      "name" : "amountInPaise",
+      "type" : "long",
+      "description" : "Total amount in the smallest currency unit (paise)."
+    }, {
+      "name" : "status",
+      "type" : "String",
+      "description" : "Current order status."
+    }, {
+      "name" : "items",
+      "type" : "List<OrderItemResponse>",
+      "description" : "List of items in the order."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderItemResponse.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "DTO layer - A record representing an order in API responses, providing the frontend with the necessary details for payment processing and display."
+  }, {
+    "file_name" : "OrderItemResponse.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/OrderItemResponse.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing an OrderItem in API responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "menuItemName",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "quantity",
+      "type" : "int",
+      "description" : ""
+    }, {
+      "name" : "price",
+      "type" : "BigDecimal",
+      "description" : ""
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "order-processing-backend",
+    "file_role" : "DTO layer - A record representing a single item in an order response, providing human-readable details for display."
+  }, {
+    "file_name" : "PaymentService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/PaymentService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service for interacting with the Razorpay payment gateway.",
+    "public_functions" : [ {
+      "name" : "createRazorpayOrder",
+      "parameters" : [ "BigDecimal amount", "String internalOrderId" ],
+      "return_type" : "RazorpayOrderResponse",
+      "description" : "Creates an order on Razorpay and returns the order ID."
+    }, {
+      "name" : "verifyPaymentSignature",
+      "parameters" : [ "PaymentVerificationRequest request" ],
+      "return_type" : "boolean",
+      "description" : "Verifies the signature returned by Razorpay after payment."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/dto/RazorpayOrderResponse.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/PaymentVerificationRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "payment-gateway-backend",
+    "file_role" : "SERVICE layer - Encapsulates all interactions with the Razorpay API. Its public methods createRazorpayOrder(amount, id) and verifyPaymentSignature(request) are called by the OrderService to handle payment flows."
+  }, {
+    "file_name" : "PaymentController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/PaymentController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Controller to handle webhooks from Razorpay.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/payment/webhook",
+      "request_body" : "Razorpay webhook payload",
+      "response_body" : "void",
+      "description" : "Receives payment success/failure notifications from Razorpay."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/OrderService.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "payment-gateway-backend",
+    "file_role" : "CONTROLLER layer - Exposes the POST /api/v1/payment/webhook endpoint to receive asynchronous notifications from Razorpay, verifying the webhook signature and updating the order status via OrderService."
+  }, {
+    "file_name" : "RazorpayOrderResponse.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/RazorpayOrderResponse.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO to hold the order details from Razorpay.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "razorpayOrderId",
+      "type" : "String",
+      "description" : "The order ID generated by Razorpay."
+    }, {
+      "name" : "amountInPaise",
+      "type" : "long",
+      "description" : "The order amount in paise."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "payment-gateway-backend",
+    "file_role" : "DTO layer - A record representing the essential information returned from Razorpay after creating an order, used internally between PaymentService and OrderService."
+  }, {
+    "file_name" : "PaymentVerificationRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/PaymentVerificationRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for verifying a Razorpay payment.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "razorpayOrderId",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "razorpayPaymentId",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "razorpaySignature",
+      "type" : "String",
+      "description" : ""
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "payment-gateway-backend",
+    "file_role" : "DTO layer - A record containing the three IDs required to verify a payment signature with Razorpay's utility function."
+  }, {
+    "file_name" : "Event.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/model/Event.java",
+    "file_type" : "BACKEND",
+    "layer" : "MODEL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Represents a special event or promotion at the restaurant.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : "Primary key."
+    }, {
+      "name" : "title",
+      "type" : "String",
+      "description" : "The title of the event."
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : "A description of the event."
+    }, {
+      "name" : "eventDate",
+      "type" : "LocalDate",
+      "description" : "The date of the event."
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : "A promotional image for the event."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "MODEL layer - Defines the schema for a restaurant event or special offer, including title, date, and an image."
+  }, {
+    "file_name" : "EventRepository.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/repository/EventRepository.java",
+    "file_type" : "BACKEND",
+    "layer" : "REPOSITORY",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Spring Data JPA repository for Event entities.",
+    "public_functions" : [ {
+      "name" : "findAllByOrderByEventDateDesc",
+      "parameters" : [ ],
+      "return_type" : "List<Event>",
+      "description" : "Finds all events, ordered by most recent first."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/model/Event.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "REPOSITORY layer - Provides data access methods for Event entities, including a custom query to fetch events sorted by date."
+  }, {
+    "file_name" : "EventService.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/service/EventService.java",
+    "file_type" : "BACKEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service layer for managing events.",
+    "public_functions" : [ {
+      "name" : "getAllEvents",
+      "parameters" : [ ],
+      "return_type" : "List<EventDto>",
+      "description" : "Retrieves all events."
+    }, {
+      "name" : "createEvent",
+      "parameters" : [ "CreateEventRequest request" ],
+      "return_type" : "EventDto",
+      "description" : "Creates a new event."
+    }, {
+      "name" : "deleteEvent",
+      "parameters" : [ "UUID id" ],
+      "return_type" : "void",
+      "description" : "Deletes an event."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/repository/EventRepository.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/EventDto.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateEventRequest.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "SERVICE layer - Implements business logic for events. Its public methods like getAllEvents() and createEvent(request) are called by the public and admin controllers."
+  }, {
+    "file_name" : "EventController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/EventController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Public-facing REST controller for viewing events.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/events",
+      "request_body" : null,
+      "response_body" : "List<EventDto>",
+      "description" : "Fetches all public events."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/EventService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/EventDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "CONTROLLER layer - Exposes the public GET /api/v1/events endpoint for customers to see upcoming events. Delegates logic to EventService."
+  }, {
+    "file_name" : "AdminEventController.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/controller/AdminEventController.java",
+    "file_type" : "BACKEND",
+    "layer" : "CONTROLLER",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin-only REST controller for managing events.",
+    "public_functions" : [ ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/admin/events",
+      "request_body" : "CreateEventRequest",
+      "response_body" : "EventDto",
+      "description" : "Creates a new event."
+    }, {
+      "method" : "DELETE",
+      "path" : "/api/v1/admin/events/{id}",
+      "request_body" : null,
+      "response_body" : "void",
+      "description" : "Deletes an event."
+    } ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "backend/src/main/java/com/gulmoharbarcurryhouse/service/EventService.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateEventRequest.java", "backend/src/main/java/com/gulmoharbarcurryhouse/dto/EventDto.java" ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "CONTROLLER layer - Exposes secured endpoints under /api/v1/admin/events for creating and deleting events. All methods require ADMIN role."
+  }, {
+    "file_name" : "EventDto.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/EventDto.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for representing an Event in API responses.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "id",
+      "type" : "UUID",
+      "description" : ""
+    }, {
+      "name" : "title",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : ""
+    }, {
+      "name" : "eventDate",
+      "type" : "LocalDate",
+      "description" : ""
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : ""
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "DTO layer - A record representing an event for API communication."
+  }, {
+    "file_name" : "CreateEventRequest.java",
+    "file_path" : "backend/src/main/java/com/gulmoharbarcurryhouse/dto/CreateEventRequest.java",
+    "file_type" : "BACKEND",
+    "layer" : "DTO",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "DTO for creating a new event.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "title",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "description",
+      "type" : "String",
+      "description" : "@NotBlank"
+    }, {
+      "name" : "eventDate",
+      "type" : "LocalDate",
+      "description" : "@NotNull"
+    }, {
+      "name" : "imageUrl",
+      "type" : "String",
+      "description" : "@NotBlank @URL"
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "event-management-backend",
+    "file_role" : "DTO layer - A record representing the request body for creating an event, with validation annotations."
+  }, {
+    "file_name" : "App.tsx",
+    "file_path" : "frontend/src/App.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "The root component of the React application, responsible for setting up providers and routing.",
+    "public_functions" : [ {
+      "name" : "App",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Main application component."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/context/AuthContext.tsx", "frontend/src/pages/HomePage.tsx", "frontend/src/pages/MenuPage.tsx", "frontend/src/pages/ReservationPage.tsx", "frontend/src/pages/OrderPage.tsx", "frontend/src/pages/EventsPage.tsx", "frontend/src/pages/GalleryPage.tsx", "frontend/src/pages/AboutPage.tsx", "frontend/src/pages/ContactPage.tsx", "frontend/src/pages/LoginPage.tsx", "frontend/src/pages/admin/AdminDashboardPage.tsx", "frontend/src/pages/admin/AdminMenuPage.tsx", "frontend/src/pages/admin/AdminReservationsPage.tsx", "frontend/src/pages/admin/AdminOrdersPage.tsx", "frontend/src/pages/admin/AdminEventsPage.tsx", "frontend/src/components/ProtectedRoute.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "PAGE layer - The application's entry point. It wraps all other components in necessary providers (Router, QueryClient, Auth) and defines the application's route structure."
+  }, {
+    "file_name" : "Layout.tsx",
+    "file_path" : "frontend/src/components/Layout.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Main layout component for public-facing pages, including the header and footer.",
+    "public_functions" : [ {
+      "name" : "Layout",
+      "parameters" : [ "{ children: React.ReactNode }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Wraps page content with the standard header and footer."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Header.tsx", "frontend/src/components/Footer.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "COMPONENT layer - A structural wrapper for all public pages. It renders the Header, the page's specific content via its `children` prop, and the Footer, ensuring a consistent look and feel."
+  }, {
+    "file_name" : "Header.tsx",
+    "file_path" : "frontend/src/components/Header.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "The main navigation header for the website, responsive for mobile and desktop.",
+    "public_functions" : [ {
+      "name" : "Header",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Displays the business name, navigation links, and a CTA button."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "COMPONENT layer - Renders the sticky top navigation bar. It includes the business logo/name, navigation links derived from `recommendedPages`, and a primary CTA, with a collapsible hamburger menu for mobile views."
+  }, {
+    "file_name" : "Footer.tsx",
+    "file_path" : "frontend/src/components/Footer.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "The main footer for the website, containing contact information, hours, and a map.",
+    "public_functions" : [ {
+      "name" : "Footer",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Displays key business information in a three-column layout."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/GoogleMapsEmbed.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "COMPONENT layer - Renders the site-wide footer. It displays business address, contact details, opening hours, and an embedded Google Map, all sourced from the project brief."
+  }, {
+    "file_name" : "WhatsAppButton.tsx",
+    "file_path" : "frontend/src/components/WhatsAppButton.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A floating action button for initiating a WhatsApp chat.",
+    "public_functions" : [ {
+      "name" : "WhatsAppButton",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "A fixed-position button that links to the WhatsApp API."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "COMPONENT layer - A floating action button in the corner of the screen that provides a quick, one-click way for users to contact the business via WhatsApp."
+  }, {
+    "file_name" : "GoogleMapsEmbed.tsx",
+    "file_path" : "frontend/src/components/GoogleMapsEmbed.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A component to embed a Google Map iframe.",
+    "public_functions" : [ {
+      "name" : "GoogleMapsEmbed",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders an iframe with the Google Maps location of the business."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "core-ui",
+    "file_role" : "COMPONENT layer - A reusable component that renders the Google Maps iframe, using latitude and longitude from the brief. Used in the Footer and ContactPage."
+  }, {
+    "file_name" : "client.ts",
+    "file_path" : "frontend/src/api/client.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Configured Axios instance for making API requests.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "apiClient",
+      "type" : "AxiosInstance",
+      "description" : "The singleton Axios instance used by all service files."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "SERVICE layer - Creates and exports a singleton Axios instance. It configures the base URL from environment variables and adds a request interceptor to automatically attach the JWT 'token' from localStorage to Authorization headers."
+  }, {
+    "file_name" : "AuthContext.tsx",
+    "file_path" : "frontend/src/context/AuthContext.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "CONTEXT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "React context for managing authentication state.",
+    "public_functions" : [ {
+      "name" : "AuthProvider",
+      "parameters" : [ "{ children: React.ReactNode }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Provider component that wraps the app."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/services/authService.ts", "frontend/src/types/auth.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "CONTEXT layer - Provides authentication state and functions (login, logout, isAuthenticated) to the entire application. It interacts with localStorage to persist the JWT and user role."
+  }, {
+    "file_name" : "useAuth.ts",
+    "file_path" : "frontend/src/hooks/useAuth.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "HOOK",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom hook to easily access the AuthContext.",
+    "public_functions" : [ {
+      "name" : "useAuth",
+      "parameters" : [ ],
+      "return_type" : "AuthContextType",
+      "description" : "Returns the authentication context value."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/context/AuthContext.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "HOOK layer - A simple custom hook that provides a convenient, typed interface to the AuthContext, abstracting away the `useContext` call."
+  }, {
+    "file_name" : "authService.ts",
+    "file_path" : "frontend/src/services/authService.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service for handling authentication API calls.",
+    "public_functions" : [ {
+      "name" : "login",
+      "parameters" : [ "LoginCredentials" ],
+      "return_type" : "Promise<AuthResponse>",
+      "description" : "Sends login credentials to the backend."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/auth/login",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Authenticates the admin user."
+    } ],
+    "imports_from" : [ "frontend/src/api/client.ts", "frontend/src/types/auth.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "SERVICE layer - Makes HTTP requests related to authentication. Its primary public function, login(credentials), calls the POST /api/v1/auth/login endpoint using the shared apiClient."
+  }, {
+    "file_name" : "auth.ts",
+    "file_path" : "frontend/src/types/auth.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "UTIL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "TypeScript types and interfaces for the authentication domain.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "AuthResponse",
+      "type" : "interface",
+      "description" : "Shape of the response from the login endpoint."
+    }, {
+      "name" : "LoginCredentials",
+      "type" : "interface",
+      "description" : "Shape of the login request body."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "UTIL layer - Exports all TypeScript types for the authentication feature, such as AuthResponse and LoginCredentials. It is imported by authService.ts, AuthContext.tsx, and LoginPage.tsx."
+  }, {
+    "file_name" : "LoginPage.tsx",
+    "file_path" : "frontend/src/pages/LoginPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Page with a form for admin login.",
+    "public_functions" : [ {
+      "name" : "LoginPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the login form."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/hooks/useAuth.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "PAGE layer - Renders the admin login form. It uses `react-hook-form` for form state management and calls the `login` function from the `useAuth` hook on submission."
+  }, {
+    "file_name" : "ProtectedRoute.tsx",
+    "file_path" : "frontend/src/components/ProtectedRoute.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A component that guards routes, redirecting unauthenticated users to the login page.",
+    "public_functions" : [ {
+      "name" : "ProtectedRoute",
+      "parameters" : [ "{ children: JSX.Element }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Checks authentication status and renders children or redirects."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/hooks/useAuth.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "authentication-ui",
+    "file_role" : "COMPONENT layer - A route wrapper that uses the `useAuth` hook to check if a user is authenticated. If not, it redirects to `/login`; otherwise, it renders its `children`."
+  }, {
+    "file_name" : "HomePage.tsx",
+    "file_path" : "frontend/src/pages/HomePage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "The landing page for the restaurant website. Features a full-bleed hero image, featured menu items, a section on the 'garden oasis' ambiance, and a customer testimonials carousel.",
+    "public_functions" : [ {
+      "name" : "HomePage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the main landing page."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx", "frontend/src/components/HeroSection.tsx", "frontend/src/components/TestimonialsSection.tsx", "frontend/src/hooks/useMenu.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "static-pages",
+    "file_role" : "PAGE layer - The main landing page. It is composed of several sections: a HeroSection, a grid of featured dishes fetched via `useMenu`, a TestimonialsSection, and a call-to-action for reservations."
+  }, {
+    "file_name" : "AboutPage.tsx",
+    "file_path" : "frontend/src/pages/AboutPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A static page describing the restaurant's story, concept ('Indian food with a twist'), and the 6000 sq ft space.",
+    "public_functions" : [ {
+      "name" : "AboutPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the about page content."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "static-pages",
+    "file_role" : "PAGE layer - A content-focused page that tells the story of Gulmohar. It combines evocative text with high-quality images of the restaurant's interior and garden area."
+  }, {
+    "file_name" : "ContactPage.tsx",
+    "file_path" : "frontend/src/pages/ContactPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A static page with contact details, a contact form (optional, can be static info), opening hours, and an embedded Google Map.",
+    "public_functions" : [ {
+      "name" : "ContactPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the contact information."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx", "frontend/src/components/GoogleMapsEmbed.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "static-pages",
+    "file_role" : "PAGE layer - Provides users with all necessary contact information: address, phone (with click-to-call), email, opening hours, and a large, interactive GoogleMapsEmbed."
+  }, {
+    "file_name" : "HeroSection.tsx",
+    "file_path" : "frontend/src/components/HeroSection.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A reusable hero section component for the top of pages, featuring a full-width background image and a call-to-action.",
+    "public_functions" : [ {
+      "name" : "HeroSection",
+      "parameters" : [ "{ title: string, subtitle: string, ctaText: string, ctaLink: string, imageUrl: string }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a hero section."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "static-pages",
+    "file_role" : "COMPONENT layer - A presentational component for creating image-forward hero sections. It takes props for text and images to be used on pages like the HomePage."
+  }, {
+    "file_name" : "TestimonialsSection.tsx",
+    "file_path" : "frontend/src/components/TestimonialsSection.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A component to display a carousel of curated customer reviews, likely from Google.",
+    "public_functions" : [ {
+      "name" : "TestimonialsSection",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a section with customer testimonials."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "static-pages",
+    "file_role" : "COMPONENT layer - A presentational component that displays a curated list of positive customer reviews in a visually appealing format (e.g., cards in a carousel). The content is static."
+  }, {
+    "file_name" : "menu.ts",
+    "file_path" : "frontend/src/types/menu.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "UTIL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "TypeScript types and interfaces for the menu domain.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "MenuItem",
+      "type" : "interface",
+      "description" : "Matches the MenuItemDto from the backend."
+    }, {
+      "name" : "MenuItemCategory",
+      "type" : "interface",
+      "description" : "Matches the MenuItemCategoryDto from the backend."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-display-ui",
+    "file_role" : "UTIL layer - Exports all TypeScript types for the menu feature, such as MenuItem and MenuItemCategory. It is imported by menuService.ts, useMenu.ts, and MenuPage.tsx."
+  }, {
+    "file_name" : "menuService.ts",
+    "file_path" : "frontend/src/services/menuService.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service for fetching menu data from the API.",
+    "public_functions" : [ {
+      "name" : "getMenu",
+      "parameters" : [ ],
+      "return_type" : "Promise<MenuItemCategory[]>",
+      "description" : "Fetches the entire menu."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/menu",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Fetches the full menu."
+    } ],
+    "imports_from" : [ "frontend/src/api/client.ts", "frontend/src/types/menu.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-display-ui",
+    "file_role" : "SERVICE layer - Makes HTTP requests for menu data. Its primary public function, getMenu(), calls the GET /api/v1/menu endpoint and returns the menu data."
+  }, {
+    "file_name" : "useMenu.ts",
+    "file_path" : "frontend/src/hooks/useMenu.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "HOOK",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom hook for fetching and managing menu data state.",
+    "public_functions" : [ {
+      "name" : "useMenu",
+      "parameters" : [ ],
+      "return_type" : "{ data: MenuItemCategory[], isLoading: boolean, error: Error | null }",
+      "description" : "Uses React Query to fetch the menu."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/services/menuService.ts", "frontend/src/types/menu.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-display-ui",
+    "file_role" : "HOOK layer - A React Query hook that calls menuService.getMenu() to fetch data. It manages the asynchronous state (loading, error, data) and provides it to UI components like MenuPage."
+  }, {
+    "file_name" : "MenuPage.tsx",
+    "file_path" : "frontend/src/pages/MenuPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Displays the full restaurant menu, categorized and with high-quality images.",
+    "public_functions" : [ {
+      "name" : "MenuPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the menu."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx", "frontend/src/hooks/useMenu.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "menu-display-ui",
+    "file_role" : "PAGE layer - The customer-facing menu page. It calls the `useMenu` hook to fetch data and then renders it in a user-friendly, categorized layout with images and descriptions for each item."
+  }, {
+    "file_name" : "reservation.ts",
+    "file_path" : "frontend/src/types/reservation.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "UTIL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "TypeScript types and interfaces for the reservation domain.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "Reservation",
+      "type" : "interface",
+      "description" : "Matches the ReservationDto from the backend."
+    }, {
+      "name" : "CreateReservationPayload",
+      "type" : "interface",
+      "description" : "Matches the CreateReservationRequest from the backend."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-booking-ui",
+    "file_role" : "UTIL layer - Exports all TypeScript types for the reservation feature, such as Reservation and CreateReservationPayload. It is imported by reservationService.ts, useReservations.ts, and ReservationPage.tsx."
+  }, {
+    "file_name" : "reservationService.ts",
+    "file_path" : "frontend/src/services/reservationService.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service for handling reservation API calls.",
+    "public_functions" : [ {
+      "name" : "createReservation",
+      "parameters" : [ "CreateReservationPayload" ],
+      "return_type" : "Promise<Reservation>",
+      "description" : "Submits a new reservation request."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/reservations",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Creates a new reservation."
+    } ],
+    "imports_from" : [ "frontend/src/api/client.ts", "frontend/src/types/reservation.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-booking-ui",
+    "file_role" : "SERVICE layer - Makes HTTP requests for reservations. Its primary public function, createReservation(payload), calls the POST /api/v1/reservations endpoint."
+  }, {
+    "file_name" : "useReservations.ts",
+    "file_path" : "frontend/src/hooks/useReservations.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "HOOK",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom hook for creating reservations.",
+    "public_functions" : [ {
+      "name" : "useCreateReservation",
+      "parameters" : [ ],
+      "return_type" : "UseMutationResult<Reservation, Error, CreateReservationPayload>",
+      "description" : "Uses React Query's useMutation to handle reservation creation."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/services/reservationService.ts", "frontend/src/types/reservation.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-booking-ui",
+    "file_role" : "HOOK layer - A React Query hook that provides a mutation function for creating a reservation. It calls reservationService.createReservation and manages the mutation state (isLoading, isSuccess, error)."
+  }, {
+    "file_name" : "ReservationPage.tsx",
+    "file_path" : "frontend/src/pages/ReservationPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Page with a form for customers to book a table.",
+    "public_functions" : [ {
+      "name" : "ReservationPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the reservation form."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx", "frontend/src/hooks/useReservations.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "reservation-booking-ui",
+    "file_role" : "PAGE layer - Renders the table booking form. It uses `react-hook-form` and `zod` for validation and calls the mutation function from the `useCreateReservation` hook on submit."
+  }, {
+    "file_name" : "order.ts",
+    "file_path" : "frontend/src/types/order.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "UTIL",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "TypeScript types and interfaces for the order and cart domain.",
+    "public_functions" : [ ],
+    "public_variables" : [ {
+      "name" : "CartItem",
+      "type" : "interface",
+      "description" : "Represents an item in the shopping cart."
+    }, {
+      "name" : "OrderResponse",
+      "type" : "interface",
+      "description" : "Matches the OrderResponse DTO from the backend."
+    }, {
+      "name" : "CreateOrderPayload",
+      "type" : "interface",
+      "description" : "Matches the CreateOrderRequest DTO from the backend."
+    } ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "UTIL layer - Exports all TypeScript types for the ordering feature, such as CartItem, OrderResponse, and CreateOrderPayload. It is imported across the order flow."
+  }, {
+    "file_name" : "orderService.ts",
+    "file_path" : "frontend/src/services/orderService.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "SERVICE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Service for handling order creation API calls.",
+    "public_functions" : [ {
+      "name" : "createOrder",
+      "parameters" : [ "CreateOrderPayload" ],
+      "return_type" : "Promise<OrderResponse>",
+      "description" : "Submits a new order to the backend."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "POST",
+      "path" : "/api/v1/orders",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Creates a new order."
+    } ],
+    "imports_from" : [ "frontend/src/api/client.ts", "frontend/src/types/order.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "SERVICE layer - Makes HTTP requests for orders. Its primary public function, createOrder(payload), calls the POST /api/v1/orders endpoint to initiate the checkout process."
+  }, {
+    "file_name" : "useOrders.ts",
+    "file_path" : "frontend/src/hooks/useOrders.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "HOOK",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom hook for creating orders.",
+    "public_functions" : [ {
+      "name" : "useCreateOrder",
+      "parameters" : [ ],
+      "return_type" : "UseMutationResult<OrderResponse, Error, CreateOrderPayload>",
+      "description" : "Uses React Query's useMutation to handle order creation."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/services/orderService.ts", "frontend/src/types/order.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "HOOK layer - A React Query hook providing a mutation function for creating an order. It calls orderService.createOrder and manages the mutation state, triggering the payment flow on success."
+  }, {
+    "file_name" : "OrderPage.tsx",
+    "file_path" : "frontend/src/pages/OrderPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Page for online ordering, showing the menu and the user's cart.",
+    "public_functions" : [ {
+      "name" : "OrderPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the online ordering interface."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/Layout.tsx", "frontend/src/hooks/useMenu.ts", "frontend/src/context/CartContext.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "PAGE layer - The main interface for online ordering. It displays the menu (via `useMenu`) and allows users to add items to their cart (managed by `CartContext`)."
+  }, {
+    "file_name" : "CartContext.tsx",
+    "file_path" : "frontend/src/context/CartContext.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "CONTEXT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "React context for managing the state of the shopping cart.",
+    "public_functions" : [ {
+      "name" : "CartProvider",
+      "parameters" : [ "{ children: React.ReactNode }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Provider component for the cart state."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/types/order.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "CONTEXT layer - Manages the state of the user's shopping cart. It exposes functions like `addItem`, `removeItem`, and `clearCart`, along with the current cart items and total."
+  }, {
+    "file_name" : "useRazorpay.ts",
+    "file_path" : "frontend/src/hooks/useRazorpay.ts",
+    "file_type" : "FRONTEND",
+    "layer" : "HOOK",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Custom hook to handle the Razorpay payment flow.",
+    "public_functions" : [ {
+      "name" : "useRazorpay",
+      "parameters" : [ "{ onPaymentSuccess: (response) => void, onPaymentError: () => void }" ],
+      "return_type" : "{ openPaymentGateway: (options) => void }",
+      "description" : "Initializes and opens the Razorpay checkout modal."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "HOOK layer - Encapsulates the logic for interacting with the Razorpay Checkout script. Its `openPaymentGateway` function takes order details and displays the payment modal to the user."
+  }, {
+    "file_name" : "CheckoutButton.tsx",
+    "file_path" : "frontend/src/components/CheckoutButton.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "A button component that orchestrates the checkout process.",
+    "public_functions" : [ {
+      "name" : "CheckoutButton",
+      "parameters" : [ "{ cartItems: CartItem[], customerDetails: any }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Handles order creation and payment gateway integration."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/hooks/useOrders.ts", "frontend/src/hooks/useRazorpay.ts" ],
+    "depends_on" : [ ],
+    "feature_name" : "order-checkout-ui",
+    "file_role" : "COMPONENT layer - The trigger for the entire checkout flow. On click, it calls the `useCreateOrder` mutation, and on success, it uses the response to call `useRazorpay` to open the payment modal."
+  }, {
+    "file_name" : "AdminLayout.tsx",
+    "file_path" : "frontend/src/components/AdminLayout.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "COMPONENT",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Layout for all admin pages, featuring a persistent sidebar for navigation.",
+    "public_functions" : [ {
+      "name" : "AdminLayout",
+      "parameters" : [ "{ children: React.ReactNode }" ],
+      "return_type" : "JSX.Element",
+      "description" : "Wraps admin page content with the admin sidebar and header."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "COMPONENT layer - A structural wrapper for all admin-facing pages. It renders a consistent sidebar with navigation links to all admin sections (Dashboard, Orders, etc.) and a main content area for the page's `children`."
+  }, {
+    "file_name" : "AdminDashboardPage.tsx",
+    "file_path" : "frontend/src/pages/admin/AdminDashboardPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "The main dashboard for the admin panel, showing summary information.",
+    "public_functions" : [ {
+      "name" : "AdminDashboardPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders the admin dashboard."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ ],
+    "imports_from" : [ "frontend/src/components/AdminLayout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "PAGE layer - The landing page for the admin section. It provides a high-level overview of recent orders and reservations, with links to the detailed management pages."
+  }, {
+    "file_name" : "AdminMenuPage.tsx",
+    "file_path" : "frontend/src/pages/admin/AdminMenuPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin page for managing menu items (CRUD).",
+    "public_functions" : [ {
+      "name" : "AdminMenuPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a data table and forms for menu management."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/menu",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Fetch all menu items for display."
+    }, {
+      "method" : "POST",
+      "path" : "/api/v1/admin/menu-items",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Create a new menu item."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/menu-items/{id}",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Update a menu item."
+    }, {
+      "method" : "DELETE",
+      "path" : "/api/v1/admin/menu-items/{id}",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Delete a menu item."
+    } ],
+    "imports_from" : [ "frontend/src/components/AdminLayout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "PAGE layer - Provides a full CRUD interface for menu items. It displays all items in a table and uses modals with forms for creating and editing entries."
+  }, {
+    "file_name" : "AdminReservationsPage.tsx",
+    "file_path" : "frontend/src/pages/admin/AdminReservationsPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin page for viewing and managing table reservations.",
+    "public_functions" : [ {
+      "name" : "AdminReservationsPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a data table of reservations."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/admin/reservations",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Fetch all reservations."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/reservations/{id}/status",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Update a reservation's status."
+    } ],
+    "imports_from" : [ "frontend/src/components/AdminLayout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "PAGE layer - Provides an interface for managing table reservations. It displays all reservations in a table and allows the admin to update their status (e.g., from PENDING to CONFIRMED)."
+  }, {
+    "file_name" : "AdminOrdersPage.tsx",
+    "file_path" : "frontend/src/pages/admin/AdminOrdersPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin page for viewing and managing customer orders.",
+    "public_functions" : [ {
+      "name" : "AdminOrdersPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a data table of orders."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/admin/orders",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Fetch all orders."
+    }, {
+      "method" : "PUT",
+      "path" : "/api/v1/admin/orders/{id}/status",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Update an order's status."
+    } ],
+    "imports_from" : [ "frontend/src/components/AdminLayout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "PAGE layer - Provides an interface for managing customer orders. It displays all orders in a table and allows the admin to update their status through the fulfillment process."
+  }, {
+    "file_name" : "AdminEventsPage.tsx",
+    "file_path" : "frontend/src/pages/admin/AdminEventsPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : "2024-07-29",
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Admin page for managing events and specials.",
+    "public_functions" : [ {
+      "name" : "AdminEventsPage",
+      "parameters" : [ ],
+      "return_type" : "JSX.Element",
+      "description" : "Renders a data table and forms for event management."
+    } ],
+    "public_variables" : [ ],
+    "api_endpoints" : [ ],
+    "api_endpoints_consumed" : [ {
+      "method" : "GET",
+      "path" : "/api/v1/events",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Fetch all events."
+    }, {
+      "method" : "POST",
+      "path" : "/api/v1/admin/events",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Create a new event."
+    }, {
+      "method" : "DELETE",
+      "path" : "/api/v1/admin/events/{id}",
+      "request_body" : null,
+      "response_body" : null,
+      "description" : "Delete an event."
+    } ],
+    "imports_from" : [ "frontend/src/components/AdminLayout.tsx" ],
+    "depends_on" : [ ],
+    "feature_name" : "admin-portal-ui",
+    "file_role" : "PAGE layer - Provides a CRUD interface for managing special events. It displays all events in a list or table and uses a modal form for creating new entries."
+  }, {
+    "file_name" : "EventsPage.tsx",
+    "file_path" : "frontend/src/pages/EventsPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : null,
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Auto-added: referenced in imports_from but missing from manifest",
+    "public_functions" : null,
+    "public_variables" : null,
+    "api_endpoints" : null,
+    "api_endpoints_consumed" : null,
+    "imports_from" : null,
+    "depends_on" : null,
+    "feature_name" : null,
+    "file_role" : null
+  }, {
+    "file_name" : "GalleryPage.tsx",
+    "file_path" : "frontend/src/pages/GalleryPage.tsx",
+    "file_type" : "FRONTEND",
+    "layer" : "PAGE",
+    "created_date" : null,
+    "updated_date" : "2026-06-27",
+    "status" : "VALIDATED",
+    "description" : "Auto-added: referenced in imports_from but missing from manifest",
+    "public_functions" : null,
+    "public_variables" : null,
+    "api_endpoints" : null,
+    "api_endpoints_consumed" : null,
+    "imports_from" : null,
+    "depends_on" : null,
+    "feature_name" : null,
+    "file_role" : null
+  } ],
+  "features" : [ ]
+}
